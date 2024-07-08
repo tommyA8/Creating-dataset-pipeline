@@ -30,7 +30,7 @@ pip install -r requirements.txt
 pip install -U albumentations
 ```
 
-# How to Creat a MRT Dataset
+# How to Creat a YOLO Format Dataset
 
 1. Convert video to image 
     ```cli
