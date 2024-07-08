@@ -18,34 +18,18 @@ After annotating
 
 def rename_raw_image(source, name):
     try:
-        # source = raw_video/footage1
-        new_folder = source + "/" + "rename_" + name
-        
         for filename in (os.listdir(source)):
             if not filename.endswith(".jpg"):
                 continue
-            re_name = f"{name}-{filename}"
-            print(filename, "=>", re_name)
+            re_name = f"{name}_{filename}"
+            # print(filename, "=>", re_name)
             
             src =f"{source}/{filename}"  # foldername/filename, if .py file is outside folder
-
-            try:
-                os.mkdir(new_folder) # raw_video/footage1/rename_footage1
-                # print(error)        
-                dst =f"{new_folder}/{re_name}" # raw_video/footage1/rename_footage1/footage1-00000.jpg
-                # rename() function will
-                # rename all the files
-                shutil.copy(src, dst)
-                # os.rename(src, dst)
-            except OSError as error:
-                # print(error)        
-                dst =f"{new_folder}/{re_name}" # raw_video/footage1/rename_footage1/footage1-00000.jpg
-                # rename() function will
-                # rename all the files
-                shutil.copy(src, dst)
-                # os.rename(src, dst)
-        
-        return new_folder
+            dst =f"{source}/{re_name}" # raw_video/footage1/rename_footage1/footage1-00000.jpg
+            # rename() function will
+            # rename all the files
+            # shutil.copyfile(src, dst)
+            shutil.move(src, dst)
 
     except NameError:
         print("Please put the folder path")
@@ -55,23 +39,16 @@ def resize_img(source, img_size, dst_folder):
         for filename in os.listdir(source):
             if not filename.endswith(".jpg"):
                 continue
-            # file_path = f"{source}/{filename}"
+
             image = f"{source}/{filename}"
-            # print(image)
             im = cv2.imread(image)
-            resized = cv2.resize(im, img_size) # (width, height)
+            resized = cv2.resize(im, img_size, cv2.INTER_AREA)
             output_name = filename[:-4]+"_resized"+".jpg"
             
             dst = f"{dst_folder}/{output_name}"
             cv2.imwrite(dst, resized)
-
     except NameError:
-        # im = cv2.imread(source)
-        # resized = cv2.resize(im, img_size)
-        # output_name = source[:-4]+"_resized"+".jpg"
-        # cv2.imwrite(output_name, resized)
         print("Please put the folder path")
-    
 
 if __name__ == "__main__":
 
@@ -87,7 +64,7 @@ if __name__ == "__main__":
         
     parser.add_argument("--destination",
                         type=str,
-                        default="pre-processed_images",#"dataset/resized_raw_images",
+                        default="pre-processed-images",#"dataset/resized_raw_images",
                         help="destination path for results")
         
     parser.add_argument("--width",
@@ -103,21 +80,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     
-    if args.destination != "pre-processed_images":
+    if args.destination != "pre-processed-images":
         # rename
-        rename_path = rename_raw_image(args.source, args.name)
+        rename_raw_image(args.source, args.name)
         # resize
-        resize_img(rename_path, (args.width, args.height), args.destination)
+        resize_img(args.source, (args.width, args.height), args.destination)
     else:
-        try:
-            os.mkdir(args.destination)
-            rename_path = rename_raw_image(args.source, args.name)
-            # resize
-            resize_img(rename_path, (args.width, args.height), args.destination) 
+        os.makedirs(args.destination, exist_ok=True)
+        rename_raw_image(args.source, args.name)
+        # resize
+        resize_img(args.source, (args.width, args.height), args.destination) 
             
-        except OSError as error:
-            print(error) 
-            rename_path = rename_raw_image(args.source, args.name)
-            # resize
-            resize_img(rename_path, (args.width, args.height), args.destination)
-        
