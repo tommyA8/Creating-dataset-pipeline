@@ -40,8 +40,8 @@ if __name__ == "__main__":
     
     args = parser.parse_args()
     
-    pre_process_pipe(args.source, 
-                     args.per,
-                     args.width,
-                     args.height
+    pre_process_pipe(raw_video_stuff_path=args.source, 
+                     number_to_skip=args.per,
+                     width=args.width,
+                     height=args.height
                      )

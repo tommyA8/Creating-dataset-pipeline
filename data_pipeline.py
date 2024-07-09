@@ -42,7 +42,7 @@ def resize_img(source, img_size, dst_folder):
 
             image = f"{source}/{filename}"
             im = cv2.imread(image)
-            resized = cv2.resize(im, img_size, cv2.INTER_AREA)
+            resized = cv2.resize(im, img_size, interpolation=cv2.INTER_LANCZOS4)  # INTER_LANCZOS4 is a high-quality downsampling filter
             output_name = filename[:-4]+"_resized"+".jpg"
             
             dst = f"{dst_folder}/{output_name}"
