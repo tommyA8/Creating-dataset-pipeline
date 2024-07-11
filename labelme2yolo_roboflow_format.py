@@ -46,12 +46,13 @@ if __name__ == "__main__":
     
     args = parser.parse_args(sys.argv[1:])
     
-    print("Original number of dataset: ", len(glob.glob(f"{args.json_dir}/*")))
+    
     
     labelme2yolo(json_dir=args.json_dir, val_size=args.val_size)
     
     change_folder_format(labelme2yolo_folder=f"{args.json_dir}/YOLODataset",
                          new_folder_path=args.output_dir)
     
+    print("Original number of dataset: ", len(glob.glob(f"{args.json_dir}/*")))
     print("Number of images in YOLO format: ", len(glob.glob(f"{args.output_dir}/train/images/*")))
     print("Number of labels in YOLO format: ", len(glob.glob(f"{args.output_dir}/train/labels/*")))
