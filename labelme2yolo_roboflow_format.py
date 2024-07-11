@@ -54,5 +54,9 @@ if __name__ == "__main__":
                          new_folder_path=args.output_dir)
     
     print("Original number of dataset: ", len(glob.glob(f"{args.json_dir}/*")))
-    print("Number of images in YOLO format: ", len(glob.glob(f"{args.output_dir}/train/images/*")))
-    print("Number of labels in YOLO format: ", len(glob.glob(f"{args.output_dir}/train/labels/*")))
+    print("Number of images in YOLO format: ", 
+          len(glob.glob(f"{args.output_dir}/train/images/*")) \
+        + len(glob.glob(f"{args.output_dir}/val/images/*")) )
+    print("Number of labels in YOLO format: ", 
+          len(glob.glob(f"{args.output_dir}/train/labels/*")) \
+        + len(glob.glob(f"{args.output_dir}/val/labels/*")) )
