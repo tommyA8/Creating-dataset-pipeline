@@ -4,7 +4,6 @@ import glob
 import subprocess
 import argparse
 import sys
-import yaml
 
 def labelme2yolo(json_dir, val_size):
     os.chdir("Labelme2YOLO")
@@ -33,7 +32,7 @@ def change_folder_format(labelme2yolo_folder, new_folder_path, ):
 
     if len(glob.glob(f"{image_path}/*")) != len(glob.glob(f"{label_path}/*")):
         print("images and label is not maching")
-            
+          
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser()
@@ -47,9 +46,9 @@ if __name__ == "__main__":
     args = parser.parse_args(sys.argv[1:])
     
     
-    
+    # change labelme format to YOLO format
     labelme2yolo(json_dir=args.json_dir, val_size=args.val_size)
-    
+    # renew folder path to roboflow style
     change_folder_format(labelme2yolo_folder=f"{args.json_dir}/YOLODataset",
                          new_folder_path=args.output_dir)
     
