@@ -30,36 +30,42 @@ pip install -r requirements.txt
 pip install -U albumentations
 ```
 
-# How to Creat a YOLO Format Dataset
+# How to Create a YOLO Format Dataset
 
-        
-1. Preparation data for annotating
-    
-    (including: Convert video to image, Rename and resize)
-    ```cli
-    python prepare_pipeine.py \
-    --source <your_videos_folder> \
-    --width 640 \
-    --height 640
-    ```
+## Before Annotation
+Preparation data for annotating (including: Convert video to image, Rename and resize)
 
-2. Now, you can do annotation
+```cli
+python prepare_pipeline.py \
+--source <your_videos_folder> \
+--per <number_of_frmae_want_to_skip> \
+--width 640 \
+--height 640
+ ```
+## Annotating
+Now, you can do annotation
 
-    ```cli
-    ls <your_processed_images_path>
-    labelme <your_processed_images_path>
-    ```
-
-3. convert labelme JSON format to yoloformat 
+```cli
+ls resized-images    
+```
+create any folder for saving annotated images
+```cli
+labelme resized-images --output <annotated_images_folder>
+```
+## After Annotation
+convert labelme JSON format to yoloformat 
    
-    ```cli
-    cd labelme2yolo
+```cli
+python labelme2yolo_roboflow_format.py \
+--json_dir <annotated_images_folder> \
+--val_size 0.1 \
+--output_dir <output_folder_for_yolo_format> # automatically create
+```
+output_dir can automatically create
 
-    python labelme2yolo.py \
-    --json_dir <labeled_images_path> \
-    --val_size 0.1
-    ```
+***Have to manual write 'data.yaml'***
 
+# Augmentation (Not Use)
 4. Perform Data Augmentation
 
     Example of usage of *albumentations*
